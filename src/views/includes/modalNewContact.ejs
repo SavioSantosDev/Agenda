@@ -1,0 +1,46 @@
+<!-- Botão e modal para criar novo contato -->
+<div class="pb-3 mb-3 text-end border-bottom">
+  <button type="button" class="btn btn-dark bg-gradient" data-bs-toggle="modal" data-bs-target="#newContact">
+    Novo contato
+  </button>
+</div>
+
+<div class="modal fade" id="newContact" tabindex="-1" aria-labelledby="newContactLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="/criar-contato/<%= user._id %> " method="POST">
+
+      <input type="hidden" name="_csrf" value=<%= csrfToken %>>
+      
+      <header class="modal-header">
+        <h5 class="modal-title" id="newContactLabel">Adicionar contato</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </header>
+
+      <div class="modal-body">
+          <!-- Nome -->
+          <div class="mb-3">
+            <label for="name" class="form-label">Nome:</label>
+            <input type="text" class="form-control" id="name" name="name">
+          </div>
+
+          <!-- Telefone -->
+          <div class="mb-3">
+            <label for="phone" class="form-label">Telefone:</label>
+            <input type="tel" class="form-control" id="phone" name="phone">
+          </div>
+
+          <!-- E-mail -->
+          <div class="mb-3">
+            <label for="email" class="form-label">E-mail:</label>
+            <input type="email" class="form-control" id="email" name="email">
+          </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-dark bg-gradient">Criar contato</button>
+      </footer>
+
+    </form>
+  </div>
+</div>
