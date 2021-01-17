@@ -1,52 +1,32 @@
-<%- include('./includes/head') %>
+<%- include('./includes/head') %> 
 
-<%- include('./includes/navbar') %>
-
-<main class="home">
-  <div class="container py-5">
-
-    <header class="text-center mb-5">
-      <div class="display-2">Agenda de contatos</div>
-      <div class="lead">Gerencie todos os seus contatos aqui</div>
-    </header>
-
+<main class="min-vh-100 bg-dark bg-gradient d-flex align-items-center justify-content-center">
+  <div class="container">
     <div class="row justify-content-center">
+
       <div class="col-8">
-      
-        <% if (user) { %> 
+        <div class="bg-white p-5 rounded">
 
-          <%- include('./includes/modalNewContact') %> 
+          <div class="display-3">Agenda de contatos</div>
 
-          <!-- Tabela para listar os contatos -->
-          <table class="table table-striped align-middle">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Telefone</th>
-                <th scope="col">E-mail</th>
-                <th colspan="2"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Sávio</td>
-                <td>(77) 99192-1255</td>
-                <td>saviogta1@gmail.com</td>
-                <td><button type="button" class="btn btn-outline-info">Editar</button></td>
-                <td><button type="button" class="btn btn-outline-danger">Exluir</button></td>
-              </tr>
-            </tbody>
-          </table>
-          
-        <% } else { %> 
-          <p class="lead">Entre ou cadastre-se para criar um novo contato.</p>
-        <% } %> 
-      </div>
+          <%- include('./includes/messages') %> 
+  
+          <% if (user) { %> 
+            <div class="lead my-4">Bem vindo de volta <%= user.name %> </div>
+            <a href="/contatos/<%= user._id %>" class="btn btn-dark bg-gradient">Visualizar contatos</a>
+
+          <% } else { %> 
+            <div class="lead my-4">Para começar a criar contatos entre ou cadastre uma conta!</div>
+            <div>
+              <a href="/entrar" class="btn btn-outline-dark me-3">Entrar</a>
+              <a href="/cadastrar" class="btn btn-dark bg-gradient">Cadastrar</a>
+            </div>
+          <% } %> 
+        </div>
+
+        </div>
     </div>
-
   </div>
 </main>
 
-<%- include('./includes/footer') %>
+<%- include('./includes/footer') %> 

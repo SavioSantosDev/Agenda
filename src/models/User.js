@@ -142,12 +142,13 @@ class User {
   // MÉTODOS ESTÁTICOS -----
 
   /**
-   * Buscar um usuário pelo email
+   * Buscar um usuário pelo id
    */
   static async findUser(id) {
     if (typeof id !== 'string') return;
     return await UserModel.findById(id);
-  } 
+  }
+
 }
 
 module.exports = User;

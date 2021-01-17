@@ -1,11 +1,12 @@
-<div class="modal fade" id="newContact" tabindex="-1" aria-labelledby="newContactLabel" aria-hidden="true">
+<div class="modal fade" id="editContact" tabindex="-1" aria-labelledby="editContactLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form class="modal-content" action="/contatos/<%= user._id %>/criar-contato" method="POST">
+    <!-- O index será passado no template da listagem de contatos -->
+    <form class="modal-content" action="/contatos/<%= user._id %>/editar/<%= index %> " method="POST">
 
       <input type="hidden" name="_csrf" value=<%= csrfToken %>>
       
       <header class="modal-header">
-        <h5 class="modal-title" id="newContactLabel">Adicionar contato</h5>
+        <h5 class="modal-title" id="editContactLabel">Editar contato</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </header>
 
@@ -13,25 +14,25 @@
           <!-- Nome -->
           <div class="mb-3">
             <label for="name" class="form-label">Nome:</label>
-            <input type="text" class="form-control" id="name" name="name" autofocus>
+            <input type="text" class="form-control" id="name" name="name" value=<%= contact.name %>  autofocus>
           </div>
 
           <!-- Telefone -->
           <div class="mb-3">
             <label for="phone" class="form-label">Telefone:</label>
-            <input type="tel" class="form-control" id="phone" name="phone">
+            <input type="tel" class="form-control" id="phone" name="phone" value=<%= contact.phone %>>
           </div>
 
           <!-- E-mail -->
           <div class="mb-3">
             <label for="email" class="form-label">E-mail:</label>
-            <input type="email" class="form-control" id="email" name="email">
+            <input type="email" class="form-control" id="email" name="email" value=<%= contact.email %>>
           </div>
       </div>
 
       <footer class="modal-footer">
         <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-dark bg-gradient">Salvar alterações</button>
+        <button type="submit" class="btn btn-dark bg-gradient">Criar contato</button>
       </footer>
 
     </form>

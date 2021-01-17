@@ -1,0 +1,178 @@
+<%- include('./includes/head') %>
+
+<%- include('./includes/navbar') %>
+
+<main class="home">
+  <div class="container py-5">
+
+    <header class="text-center mb-5">
+      <div class="display-2">Agenda de contatos</div>
+      <div class="lead">Gerencie todos os seus contatos aqui</div>
+    </header>
+
+    <div class="row justify-content-center">
+      <div class="col-8">
+      
+        <%- include('./includes/messages') %>
+        
+        <!-- Chamar modal para criar contato. Necessário para o userId e a ação (create) -->
+        <div class="pb-3 mb-3 text-end border-bottom">
+          <button
+            type="button"
+            class="btn btn-dark bg-gradient"
+            data-bs-toggle="modal"
+            data-bs-target="#contactModal"
+            data-bs-action="create"
+            data-bs-user=<%= user._id %> 
+          >
+            Novo contato
+          </button>
+        </div>
+
+        <!-- Tabela para listar os contatos -->
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Telefone</th>
+              <th scope="col">E-mail</th>
+              <th colspan="2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Se houver liste eles. Se não diga não não há contatos criados -->
+            <% if (contacts.length > 0) { %> 
+              <% contacts.forEach((contact, index) => { %> 
+                <tr>
+                  <th scope="row"><%= index + 1 %> </th>
+                  <td><%= contact.name %> </td>
+                  <td><%= contact.phone %> </td>
+                  <td><%= contact.email %> </td>
+                  <!-- EDITAR CONTATO -->
+                  <td>
+                    <!-- Passando alguns atributos de dados para já popular os campos do formulário -->
+                    <button
+                      type="button"
+                      class="btn btn-outline-info"
+                      data-bs-toggle="modal"
+                      data-bs-target="#contactModal"
+                      data-bs-action="update"
+                      data-bs-user=<%= user._id %> 
+                      data-bs-contact-name="<%- contact.name %>"
+                      data-bs-contact-phone="<%- contact.phone %>"
+                      data-bs-contact-email="<%- contact.email %>"
+                      data-bs-contact-index="<%- index %>"
+                    >
+                      Editar
+                    </buttontype=>
+                  </td>
+                  <!-- EXLUIR CONTATO -->
+                  <td>
+                    <a href="/contatos/<%= user._id %>/excluir/<%= index %>" class="btn btn-outline-danger">Exluir</a>
+                  </td>
+                </tr>
+              <% }) %> 
+            
+            <!-- Caso o array de contatos esteja vazio -->
+            <% } else { %> 
+              <tr>
+                <td colspan="6" class="text-primary fw-bold text-center">Nenhum contato criado.</td>
+              </tr>
+            <% } %> 
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" id="contactForm" method="POST">
+
+      <input type="hidden" name="_csrf" value=<%= csrfToken %>>
+      
+      <header class="modal-header">
+        <h5 class="modal-title" id="contactModalLabel">Adicionar contato</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </header>
+
+      <div class="modal-body">
+          <!-- Nome -->
+          <div class="mb-3">
+            <label for="name" class="form-label">Nome:</label>
+            <input type="text" class="form-control" id="name" name="name" autofocus>
+          </div>
+
+          <!-- Telefone -->
+          <div class="mb-3">
+            <label for="phone" class="form-label">Telefone:</label>
+            <input type="tel" class="form-control" id="phone" name="phone">
+          </div>
+
+          <!-- E-mail -->
+          <div class="mb-3">
+            <label for="email" class="form-label">E-mail:</label>
+            <input type="email" class="form-control" id="email" name="email">
+          </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Fechar</button>
+        <input type="submit" id="requestButton" class="btn btn-dark bg-gradient" value="Salvar">
+      </footer>
+
+    </form>
+  </div>
+</div>
+
+<script>
+
+  const contactModal = document.querySelector('#contactModal');
+  contactModal.addEventListener('show.bs.modal', (event) => {
+    
+    // Botão que abriu a modal
+    const button = event.relatedTarget;
+
+    // Extrair informações de dos atributos passados dentro do botão
+    const action = button.getAttribute('data-bs-action');   // create ou update
+    const userId = button.getAttribute('data-bs-user');
+    
+    // Formuláio e seu botão de submit;
+    const form = document.querySelector('#contactForm');
+    const requestButton = document.querySelector("#requestButton");
+
+    // Requisição para cirar um novo contato
+    if (action === 'create') {
+      requestButton.value = 'Criar contato';
+      form.setAttribute('action', `/contatos/${userId}/criar-contato`);
+    
+    // Atualizar um contato já existente.
+    } 
+    if (action === 'update') { 
+      requestButton.value = 'Salvar alterações';
+
+      // Atributos passado pelo botão
+      const contactName = button.getAttribute('data-bs-contact-name');
+      const contactPhone = button.getAttribute('data-bs-contact-phone');
+      const contactEmail = button.getAttribute('data-bs-contact-email');
+      const contactIndex = button.getAttribute('data-bs-contact-index');
+
+      console.log(contactName, contactPhone, contactEmail);
+
+      // Populando os campos do formulário com os dados acima
+      document.getElementById('name').value = contactName;
+      document.getElementById('phone').value = contactPhone;
+      document.getElementById('email').value = contactEmail;
+      
+      form.setAttribute('action', `/contatos/${userId}/editar/${contactIndex}`);
+    }
+
+  });
+</script>
+
+
+<%- include('./includes/footer') %>

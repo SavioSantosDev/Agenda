@@ -5,11 +5,10 @@ const { loginRequired } = require('./middlewares/middlewares');
 const contactController = require('./controllers/contactController');
 const userController = require('./controllers/userController');
 
-// Home page / Contacts
-routes.get('/', contactController.index);
-routes.post('/criar-contato/:id', loginRequired, contactController.create);
-routes.get('/editar-contato/:id', loginRequired, contactController.edit);
-routes.get('/excluir-contato/:id', loginRequired, contactController.delete);
+// Home page
+routes.get('/', (req, res) => {
+  return res.status(200).render('index');
+});
 
 // ENTRAR - REGISTRAR - SAIR de uma conta
 routes.get('/entrar', userController.loginPage);
@@ -19,6 +18,12 @@ routes.get('/cadastrar', userController.registerPage);
 routes.post('/cadastrar', userController.register);
 
 routes.get('/sair', userController.logout);
+
+// Contatos do usuário
+routes.get('/contatos/:userId', loginRequired, contactController.index);
+routes.post('/contatos/:userId/criar-contato', loginRequired, contactController.create);
+routes.post('/contatos/:userId/editar/:contactIndex', loginRequired, contactController.edit);
+routes.get('/contatos/:userId/excluir/:contactIndex', loginRequired, contactController.delete);
 
 
 // Rota não existente
