@@ -51,3 +51,16 @@ Quando uma rota é acessada podemos passar um middleware que executará uma dete
 - **connect-flash** Mensagens autodestrutivas, lidas uma única vez apenas para dar feedback para o usuário.
 
 - **validator**: Para validação de dados.
+
+
+## Build do projeto
+
+Depois de acessar o servidor (neste caso o google cloud)
+
+: mkdir agenda-mvc    Criar um repositório para subir o projeto, tipo no github
+: cd agenda-mvc
+: git init
+: git remote add origin https://github.com/SavioSantosDev/Agenda.git (url do repositório)
+  - Também é possível criar o repositório direto no servidor, mas eu vou utilizar o github
+
+Alterações no projeto basta fazer o push para o repositório e o pull lá no servidor
